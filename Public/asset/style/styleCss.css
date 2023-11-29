@@ -1,0 +1,444 @@
+:root{
+    box-sizing: border-box;
+    height: 60px;
+}
+
+img{  /*rendre toutes les images de mon site responsives*/
+    max-width: 100%;
+    height: auto;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+/* ************************************ header ************************************ */
+.logo {
+  display: flex;
+  align-items: center;
+  width: 140px;
+  height: 120px;
+}
+
+#headTitle {
+  color: #523634;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  margin-left: 50vh; 
+  text-align: center; 
+  flex-grow: 1; 
+  line-height: 1; 
+  white-space: nowrap;
+}
+
+nav {
+    background-color: #DDC5A2;
+    display: grid;
+    justify-content: space-evenly;
+    place-items: center;
+    width: 100%;
+    font-size: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  nav ul li {
+    margin: 0 25px; /* Ajoute une marge entre les éléments */
+  }
+  
+  nav ul{
+      list-style-type: none;
+      display: flex;
+  }
+  
+  nav ul a{
+      display: inline-block;
+      padding: 20px;
+      text-decoration: none;
+      color: #B6452C;
+  }
+  
+  nav ul a:hover{
+      background-color: #523634;
+      color: white;
+  }
+  
+  .menu-deroulant > a:after{
+    content: '❯';
+    font-size: 15px;
+    margin-left: 7px;
+    display: inline-block;
+  }
+  
+  .sous-menu {    
+    background-color: white;
+    border-radius: 2px;
+    overflow: hidden;
+    max-height: 0;
+    display: block;
+    position: absolute;
+    z-index: 100;
+  }
+  
+  .sous-menu > li:hover > a {
+    color: white;
+  }
+  
+  
+  @keyframes rotationFleche {
+    0% {
+      transform: rotate(0deg);
+    }
+    100%{
+      transform: rotate(90deg);
+    }
+  }  
+  
+  .menu-deroulant:hover > a:after{
+    animation: rotationFleche 0.2s linear forwards;
+  }
+  
+  @keyframes apparitionSousMenu {
+    0% {
+      box-shadow: 0px 3px 3px 1px rgba(0,0,0,0);
+      border-top: 3px solid #B6452C;
+    }
+    30% {
+      box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.3);
+    }
+    100% {
+      max-height: 50em;
+      border-top: 3px solid #B6452C;
+      box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.3);
+    }
+  }
+  
+  .menu-deroulant:hover > .sous-menu {
+    animation: apparitionSousMenu 1s forwards;
+  }
+  
+  #menuToggle{
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+  }
+  
+  /* ************************************ images et recherche ************************************ */
+  .container {
+    width: 100%;
+    height: 400px;
+    padding: 5%;
+    padding-bottom: 25%;
+    background-image: url(../images/banniereSC.png);
+    background-position: center;
+    background-size: cover;
+    display: flex; 
+    flex-direction: row;
+    align-items: center; 
+    justify-content: right;
+    position: relative;
+    z-index: 0; 
+  }
+  
+  .searchBar{
+      width: 25em;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.687);
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      border-radius: 40px;
+      padding: 10px 10px;
+      border: solid #523634;
+  } 
+  
+  .searchBar input{
+      background: transparent;
+      flex: 2;
+      border: 0;
+      outline: none; 
+      padding: 10px;
+      font-size: 13px;
+      color: #523634;
+  }
+  
+  ::placeholder{
+      color: #523634;
+      width: 205%;
+  }
+  
+  .searchBar button img{
+      width: 15px;
+  } 
+  
+  .searchBar button{
+      border: 0;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      background: #523634;
+      cursor: pointer;
+      padding: 10px;
+  } 
+
+  /* **********************Recettes********************************* */
+
+  #titreh1 {
+    font-style: georgia, verdana;
+    font-size: large;
+    color: #523634;
+    text-align: center;
+    padding: 50px 0; /* Ajouter de l'espace en haut et en bas du titre */
+  }
+
+hr {
+  margin: 10px 0;
+  background-color: #B6452C;
+  border: 0;
+  height: 2px;
+  width: 100%;
+}
+
+.mainContent {
+  display: flex;
+  flex-wrap: wrap; /* Pour permettre le passage à la ligne si nécessaire */
+  justify-content: center; /* Centrer horizontalement les cartes */
+  gap: 20px; /* Espacement entre les cartes */
+}
+
+
+.card1 {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  margin-bottom: 20px; /* Espacement entre les cartes */
+  width: 300px; /* Ajustez la largeur selon vos préférences */
+  max-width: 100%; /* Pour assurer la responsivité */
+  box-sizing: border-box; /* Assurez-vous que la largeur inclut le rembourrage et la bordure */
+  text-align: center;
+}
+
+img {
+  border-radius: 5px 5px 0 0;
+  width: 100%;
+  height: 200px; /* Ajustez la hauteur selon vos préférences */
+  object-fit: cover; /* Pour s'assurer que l'image remplit complètement la boîte */
+  margin-bottom: 20px;
+}
+
+
+.card div:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+/* 
+img {
+  border-radius: 5px 5px 0 0;
+} */
+
+.mainContainer {
+  padding: 30px 16px;
+}
+
+h4{
+  color: #B6452C;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-align: center;
+}
+
+.profil{
+  width : 100px; height : 100px;
+  border: solid 2px #523634;
+  -moz-border-radius : 75px;
+  -webkit-border-radius : 75px;
+  border-radius : 75px;
+}
+
+  /* ********************** Cards ********************** */
+  #cardButton {
+    display: block;
+    margin: 0 auto; /* Centre le bouton horizontalement */
+    padding: 10px; /* Ajustez selon vos besoins */
+    font-size: 15px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    cursor: pointer;
+    color: #523634;
+    background-color: #ddc5a2bc;
+    border: solid #B6452C;
+    border-radius: 25px;
+    max-width: 200px; /* Ajustez la largeur maximale selon vos besoins */
+    width: 100%; /* Empêche le bouton de dépasser la largeur de la carte */
+    text-align: center; /* Centre le texte à l'intérieur du bouton */
+  }
+
+.card1 {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  padding-bottom: 40px;
+}
+  /* ******************************* FORM ******************************* */
+
+
+#form1 {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 20px;
+  /* margin-top: 100px;
+  margin-bottom: 100px; */
+}
+
+label {
+  display: block;
+  padding: 5px;
+  font-weight: bold;
+  color: #523634;
+}
+
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#nomRecette{
+  width: 70%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Styles pour les boutons radio */
+.radio-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-top: 15px;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.radio-group label {
+  margin-right: 5px;
+}
+
+.quantite-container label {
+  display: block;
+  margin-bottom: 5px; 
+}
+
+.quantite-container input,
+.quantite-container select {
+  display: inline-block; 
+  vertical-align: top; 
+  margin-bottom: 0; 
+  width: 150px; 
+  height: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+/* Style pour le bouton de soumission */
+button[type="submit"] {
+  background-color: #ddc5a285;
+  color: #523634;
+  padding: 10px 20px;
+  margin-top: 25px;
+  border: 2px solid #B6452C;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: garamond;
+  font-size: small;
+  font-weight: bold;
+  width: 100%;
+}
+
+/* Style pour le bouton de soumission au survol */
+button[type="submit"]:hover {
+  background-color: #B6452C;
+}
+
+
+ /* ********************** Footer ********************** */
+.footer-basic {
+  padding:40px 0;
+  background-color:#DDC5A2;
+  color:#523634;
+  bottom: 0;
+}
+
+.footer-basic ul {
+  padding:0;
+  list-style:none;
+  display: flex;
+  justify-content: center;
+  font-size:18px;
+  line-height:1.6;
+  margin-bottom:0;
+}
+
+.footer-basic li {
+  padding:0 10px;
+}
+
+.footer-basic ul a {
+  color:inherit;
+  text-decoration:none;
+}
+
+.footer-basic ul a:hover {
+  opacity:1;
+  color: #B6452C;
+}
+
+.footer-basic .social {
+  text-align:center;
+  padding-bottom:25px;
+}
+
+.footer-basic .social > a {
+  font-size:24px;
+  width:40px;
+  height:40px;
+  line-height:40px;
+  display:inline-block;
+  text-align:center;
+  border-radius:50%;
+  border:1px solid #B6452C;
+  margin:0 8px;
+  color:inherit;
+}
+
+.footer-basic .social > a:hover {
+  opacity: 0.8;
+}
+
+.footer-basic .copyright {
+  margin-top:15px;
+  text-align:center;
+  font-size:13px;
+  color: #523634;
+  margin-bottom:0;
+}
+

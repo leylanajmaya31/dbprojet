@@ -1,0 +1,51 @@
+{
+    "class":[
+        {
+            "path": "./App/Utils/BddConnect.php"
+        },
+        {
+            "path": "./App/Utils/Messagerie.php"
+        },
+        {
+            "path": "./App/Utils/Utilitaire.php"
+        },
+        {
+            "path": "./App/Model/Commentaire.php"
+            
+        },
+        {
+            "path": "./App/Model/Recette.php"
+        },
+        {
+            "path": "./App/Model/Role.php"
+            
+        },
+        {
+            "path": "./App/Model/Utilisateur.php"
+        },
+        {
+            "path": "./App/Model/Ingredient.php"
+        },
+        {
+            "path": "./App/Vue/Template.php"
+        },
+        {
+            "path": "./App/Controller/CommentaireController.php"
+        },
+        {
+            "path": "./App/Controller/HomeController.php"
+        },
+        {
+            "path": "./App/Controller/IngredientController.php"
+        },
+        {
+            "path": "./App/Controller/RecetteController.php"
+        },
+        {
+            "path": "./App/Controller/RoleController.php"
+        },
+        {
+            "path": "./App/Controller/UtilisateurController.php"
+        }
+    ] 
+}
