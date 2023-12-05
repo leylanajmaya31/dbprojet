@@ -62,7 +62,7 @@ class UtilisateurController extends Utilisateur{
             }
         }
         Template::render('navbar.php','footer.php','vueAddUser.php','Inscription', 
-        ['script.js'],['style.css'],$error);
+        $error,['script.js'],['styleCss.css']);
     }
     public function connexionUser(){   
         $error ="";
@@ -95,7 +95,7 @@ class UtilisateurController extends Utilisateur{
             }
         }
         Template::render('navbar.php','footer.php','vueConnexionUser.php','Connexion', 
-        ['script.js', 'main.js'], ['style.css', 'main.css'],$error);
+        $error,['script.js'],['styleCss.css']);
     }
     public function deconnexionUser(){
         unset($_COOKIE['PHPSESSID']);
@@ -139,7 +139,7 @@ class UtilisateurController extends Utilisateur{
         }
         //!appel de la vue (page html)
         Template::render('navbar.php','footer.php','vueActivateUser.php','Activation', 
-        ['script.js', 'main.js'], ['style.css', 'main.css'],$error);
+        $error,['script.js'],['styleCss.css']);
         //!redirection arès 2 secondes
         header("Refresh:2; url=$url");
     }

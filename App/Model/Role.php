@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
-use App\Utils\BddConnect;
-class Role extends BddConnect{
+use App\Utils\Connexion;
+class Role {
     //!Attributs
     private ?int $id_role;
     private ?string $nom_role;
@@ -24,7 +24,7 @@ class Role extends BddConnect{
     public function add(){
         try {
             $nom = $this->getNom();
-            $req = $this->connexion()->prepare('INSERT INTO role(nom_role)VALUES(?)');
+            $req = Connexion::getInstance()->getConn()->prepare('INSERT INTO role(nom_role)VALUES(?)');
             $req->bindParam(1, $nom, \PDO::PARAM_STR);
             $req->execute();
         } 
@@ -36,7 +36,7 @@ class Role extends BddConnect{
     public function findOneBy(){
         try {
             $nom = $this->getNom();
-            $req = $this->connexion()->prepare('SELECT id_role, nom_role FROM
+            $req = Connexion::getInstance()->getConn()->prepare('SELECT id_role, nom_role FROM
             role WHERE nom_role = ?');
             $req->bindParam(1, $nom, \PDO::PARAM_STR);
             $req->execute();

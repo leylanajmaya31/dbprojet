@@ -3,7 +3,7 @@
     <label for="nom_recette"> Nom de la recette *</label>
     <input type="text" id="nom_recette" name="nom_recette">
     <label for="date_recette">Choisir la date</label>
-    <input type="date" name="date_recette">
+    <input type="date" id="date_recette" name="date_recette">
 
     <div class="radio-container">
         <label for="niveau_recette"> Niveau de difficulté *</label>
@@ -24,14 +24,32 @@
             <option value="portion">Portion</option>
             <option value="biscuit">Biscuit</option>
         </select>
-    <label for="nom_ingredient"> Ingredient </label>
-    <textarea id="nom_ingredient" name="nom_ingredient" placeholder="Saisir un ingrédient par ligne" rows="12" cols="35"></textarea>
+
+        <label for="nom_ingredient">Ingrédient</label>
+    <input type="text" id="nom_ingredient" name="nom_ingredient[]">
+
+    <label for="quantite_ingredient">Quantité</label>
+    <input type="number" id="quantite_ingredient" name="quantite_ingredient[]">
+
+    <label for="unite_ingredient">Unité</label>
+    <input type="text" id="unite_ingredient" name="unite_ingredient[]">
+    <!-- <select id="unite_ingredient" name="unite_ingredient[]">
+        <option value="kilogramme">kilogramme</option>
+        <option value="gramme">gramme</option>
+        <option value="centilitre">centilitre</option>
+        <option value="millilitre">millilitre</option>
+    </select> -->
+    <button type="button" onclick="ajouterIngredient(event)">Ajouter un ingrédient</button>
+    <!-- <ul id="ingredientList"></ul> -->
+    <ul id="ingredientList" class="ingredient"></ul>
+
+
 
     <label for="description_recette"> Description de la recette *</label>
     <textarea id="description_recette" name="description_recette" placeholder="Ex: Faire fondre le chocolat" rows="12" cols="35"></textarea>
 
     <label for="temps_recette"> Temps de cuisson </label>
-    <input type="time" id="temps" name="temps_recette">
+    <input type="time" id="temps_recette" name="temps_recette">
 
     <label for="image_recette">Télécharger une image</label>
     <input type="file" id="image_recette" name="image_recette">
@@ -40,6 +58,3 @@
 </form>
 <p><?=$error?></p>
 <?php $content = ob_get_clean()?>
-
-
-

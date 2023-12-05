@@ -1,8 +1,8 @@
 <?php
 namespace App\Model;
-use App\Utils\BddConnect;
 use App\Model\Utilisateur;
-class Recette extends BddConnect{
+use App\Utils\Connexion;
+class Recette {
     /*---------------------------- 
                 Attributs
     -----------------------------*/
@@ -19,16 +19,16 @@ class Recette extends BddConnect{
     private ?Utilisateur $auteur_recette;
 
     public function __construct(){
-        $this->auteur_recette = New Utilisateur();
+        $this->auteur_recette = new Utilisateur();
     }
     
     /*---------------------------- 
             Getters et Setters
     -----------------------------*/
-    public function getId(){
+    public function getIdRecette(){
         return $this->id_recette;
     }
-    public function setId(?int $id):void{
+    public function setIdRecette(?int $id):void{
         $this->id_recette = $id;
     }
     public function getNom():?string{
@@ -85,7 +85,7 @@ class Recette extends BddConnect{
         return $this->auteur_recette;
     }
 
-    public function setAuteur(?Utilisateur $auteur): void {
+    public function setAuteur(?Utilisateur $auteur): void { //voïd ne retourne rien evite les erreurs
         $this->auteur_recette = $auteur;
     }
     public function getUnite(): ?string {
@@ -112,7 +112,8 @@ class Recette extends BddConnect{
             $statut = !empty($this->getStatut()); //permet de convertir  false si c'est null
             $unite = $this->getUnite();
             $auteur = $this->getAuteur()->getId();
-            $req = $this->connexion()->prepare('INSERT INTO recette(nom_recette, date_recette,
+            $conn = Connexion::getInstance()->getConn();
+            $req = $conn->prepare ('INSERT INTO recette(nom_recette, date_recette,
                 niveau_recette, description_recette, portion_recette, temps_recette, image_recette, statut_recette, unite_recette, auteur_recette)
                 VALUES (?,?,?,?,?,?,?,?,?,?)');
             $req->bindParam(1, $nom, \PDO::PARAM_STR);
@@ -126,20 +127,13 @@ class Recette extends BddConnect{
             $req->bindParam(9, $unite, \PDO::PARAM_STR);
             $req->bindParam(10, $auteur, \PDO::PARAM_INT); // Utilisez l'id de l'auteur
             $req->execute();
-            $this->id_recette = $this->connexion()->lastInsertId();
+            // Récupérez l'ID de la dernière insertion
+            $this->id_recette = $conn->lastInsertId();
+            return $this->id_recette; // Retourne l'ID de la recette nouvellement ajoutée
         } catch (\Exception $e) {
             die('Error :'.$e->getMessage());
         } 
     }
-
-public function getLastInsertedId() {
-    try {
-        $pdo = $this->connexion();
-        return $pdo->lastInsertId();
-    } catch (\PDOException $e) {
-        die('Error : ' . $e->getMessage());
-    }
-}
 
     // Rechercher une recette
     public function findOneBy(){
@@ -154,10 +148,10 @@ public function getLastInsertedId() {
             $image = $this->getImage();
             $statut = $this->getStatut();
             $auteur = $this->getAuteur()->getId();
-            $req = $this->connexion()->prepare('SELECT id_recette, nom_recette,
+            $req = Connexion::getInstance()->getConn()->prepare("SELECT id_recette, nom_recette,
             date_recette, niveau_recette, description_recette, portion_recette, unite_recette, temps_recette, image_recette, statut_recette, auteur_recette FROM recette 
             WHERE nom_recette = ? AND date_recette = ? AND niveau_recette = ? AND 
-            description_recette = ? AND portion_recette = ? AND unite_recette = ? AND temps_recette = ? AND image_recette = ?  AND statut_recette = ? AND auteur_recette = ?');
+            description_recette = ? AND portion_recette = ? AND unite_recette = ? AND temps_recette = ? AND image_recette = ?  AND statut_recette = ? AND auteur_recette = ?");
             $req->bindParam(1, $nom, \PDO::PARAM_STR);
             $req->bindParam(2, $date, \PDO::PARAM_STR);
             $req->bindParam(3, $niveau, \PDO::PARAM_STR);
@@ -177,10 +171,10 @@ public function getLastInsertedId() {
         }
     }
 
-    // !Afficher la liste des recettes
+    // Afficher la liste des recettes
     public function findAll() {
         try {
-            $req = $this->connexion()->prepare('
+            $req = Connexion::getInstance()->getConn()->prepare('
                 SELECT 
                     recette.id_recette, 
                     recette.nom_recette, 
@@ -204,49 +198,28 @@ public function getLastInsertedId() {
         }
     }
 
-    // public function find(){
-    //     try {
-    //         $id_recette = $this->id_recette;
-    //         $req = $this->connexion()->prepare('SELECT 
-    //             recette.id_recette, recette.nom_recette, recette.date_recette, 
-    //         recette.niveau_recette, recette.description_recette, recette.portion_recette, recette.unite_recette,
-    //         recette.temps_recette, recette.image_recette, recette.statut_recette, recette.auteur_recette, utilisateur.nom_utilisateur, utilisateur.image_utilisateur
-    //             FROM recette 
-    //             INNER JOIN 
-    //                 utilisateur ON recette.auteur_recette = utilisateur.id_utilisateur
-    //             WHERE 
-    //                 recette.id_recette = :id_recette');
-    //         $req->bindParam(':id_recette', $id_recette, \PDO::PARAM_INT);
-    //         $req->execute();
-    //         return $req->fetchAll(\PDO::FETCH_CLASS| \PDO::FETCH_PROPS_LATE, Recette::class);
-    //         // return $req->fetch(\PDO::FETCH_ASSOC);
-    //     } catch (\Exception $e) {
-    //         die('Error : ' . $e->getMessage());
-    //     }
-    // }
 
-// Dans la classe Recette
-public function find() {
-    try {
-        $req = $this->connexion()->prepare('SELECT 
-            recette.id_recette, recette.nom_recette, recette.date_recette, 
-            recette.niveau_recette, recette.description_recette, recette.portion_recette, recette.unite_recette,
-            recette.temps_recette, recette.image_recette, recette.statut_recette, recette.auteur_recette, 
-            utilisateur.nom_utilisateur AS nom_auteur, utilisateur.image_utilisateur AS image_auteur
-        FROM recette
-        INNER JOIN utilisateur ON recette.auteur_recette = utilisateur.id_utilisateur
-        WHERE recette.id_recette = :id_recette');
-        
-        $req->bindParam(':id_recette', $id_recette, \PDO::PARAM_INT);
-        $req->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, Recette::class);
-        $req->execute();
-        
-        return $req->fetch();
-    } catch (\Exception $e) {
-        die('Error : ' . $e->getMessage());
-    }
 }
+//     public function find($id_recette) {
+//         try {
+//             $req = Connexion::getInstance()->getConn()->prepare("SELECT 
+//                 recette.id_recette, recette.nom_recette, recette.date_recette, 
+//                 recette.niveau_recette, recette.description_recette, recette.portion_recette, recette.unite_recette,
+//                 recette.temps_recette, recette.image_recette, recette.statut_recette, recette.auteur_recette, 
+//                 utilisateur.nom_utilisateur AS nom_auteur, utilisateur.image_utilisateur AS image_auteur
+//             FROM recette
+//             INNER JOIN utilisateur ON recette.auteur_recette = utilisateur.id_utilisateur
+//             WHERE recette.id_recette = :id_recette");
+            
+//             $req->bindParam(':id_recette', $id_recette, \PDO::PARAM_INT);
+//             $req->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, Recette::class);
+//             $req->execute();
+    
+//             return $req->fetch();
+//         } catch (\Exception $e) {
+//             die('Error : ' . $e->getMessage());
+//         }
+//     }
+// }
 
 
-
-}    

@@ -6,7 +6,7 @@ use App\Model\Utilisateur;
 use App\Utils\Utilitaire;
 
 class IngredientController extends Ingredient{
-    public function addIngredient(){
+    public function add(){
         $error = "";
         $user = new Utilisateur();
     
@@ -14,9 +14,15 @@ class IngredientController extends Ingredient{
         $userId = Utilitaire::cleanInput($_SESSION['id']);
         $user->setId($userId);
         $users = $user->findAll();
-        if(isset($_POST['submit'])){
-            if(!empty($_POST['nom_ingredient'] )){
+        if (isset($_POST['submit'])) {
+            if (
+                !empty($_POST['nom_ingredient']) &&
+                !empty($_POST['quantite_ingredient']) &&
+                !empty($_POST['unite_ingredient'])
+            ) {
                 $this->setNom(Utilitaire::cleanInput($_POST['nom_ingredient']));
+                $this->setQuantite(Utilitaire::cleanInput($_POST['quantite_ingredient']));
+                $this->setUnite(Utilitaire::cleanInput($_POST['unite_ingredient']));
                 if(!$this->findOneBy()){
                     $this->add();
                     $error = "Les ingredients ont été ajoutés en BDD";
@@ -29,6 +35,7 @@ class IngredientController extends Ingredient{
             }
         }
         Template::render('navbar.php', 'footer.php','vueAddIngredient.php','Ingredient',   
-        ['script.js', 'main.js'],['style.css', 'main.css'],$error, $users);
+        $error,['script.js'],['styleCss.css'], $users);
     }
 }
+

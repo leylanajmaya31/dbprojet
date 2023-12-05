@@ -1,7 +1,7 @@
 {
     "class":[
         {
-            "path": "./App/Utils/BddConnect.php"
+            "path": "./App/Utils/Connexion.php"
         },
         {
             "path": "./App/Utils/Messagerie.php"

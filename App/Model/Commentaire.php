@@ -2,8 +2,8 @@
 namespace App\Model;
 use App\Model\Utilisateur;
 use App\Model\Recette;
-use App\Utils\BddConnect;
-class Commentaire extends BddConnect{
+use App\Utils\Connexion;
+class Commentaire {
     /*---------------------------------
                 Attributs
     ---------------------------------*/
@@ -70,7 +70,7 @@ class Commentaire extends BddConnect{
             $date = $this->date_commenter;
             $auteur = $this->auteur_commentaire->getId();
             $recette = $this->recette_commentaire->getId();
-            $req = $this->connexion()->prepare('INSERT INTO commenter(
+            $req = Connexion::getInstance()->getConn()->prepare('INSERT INTO commenter(
                 commentaire_commenter, statut_commentaire, date_commenter,
                 id_utilisateur, id_recette) VALUES(?,?,?,?,?)');
             $req->bindParam(1, $commentaire, \PDO::PARAM_INT);
@@ -86,8 +86,8 @@ class Commentaire extends BddConnect{
     }
     public function findBy(){
         try {
-            $id = $this->getRecette()->getId();
-            $req = $this->connexion()->prepare('SELECT id_commentaire, commentaire_commenter,
+            $id = $this->getRecette()->getIdRecette();
+            $req = Connexion::getInstance()->getConn()->prepare('SELECT id_commentaire, commentaire_commenter,
             prenom_utilisateur, nom_utilisateur, id_recette FROM commentaire_commenter
             INNER JOIN utilisateur  ON commentaire.auteur_commentaire = utilisateur.id_utilisateur
             WHERE id_recette = ?');
@@ -95,7 +95,6 @@ class Commentaire extends BddConnect{
             $req->execute();
             return $req->fetchAll(\PDO::FETCH_CLASS| \PDO::FETCH_PROPS_LATE, Commentaire::class);
         } catch (\Exception $e) {
-            //throw $th;
         }
     }
 }

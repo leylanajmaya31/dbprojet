@@ -6,17 +6,17 @@ class HomeController{
     public function getHome(){
         $error = "";
         Template::render('navbar.php','footer.php', 'vueHome.php','Accueil', 
-        ['script.js', 'main.js'], ['style.css', 'main.css'],$error);
+        $error,['script.js'],['styleCss.css']);
     }
     public function get404(){
         $error = "";
         Template::render('navbar.php','footer.php','vueError.php','Error 404',  
-        ['script.js'], ['style.css'],$error);
+        $error,['script.js'],['styleCss.css']);
     }
     public function get401(){
         $error = "";
         Template::render('navbar.php','footer.php','vueNoRight.php','Error 401', 
-        ['script.js'], ['style.css'],$error);
+        $error,['script.js'],['styleCss.css']);
     }
     public function testMail(){
         Messagerie::sendEmail('devnum@laposte.net','exemple de mail', 'test d\'envoi depuis recette');

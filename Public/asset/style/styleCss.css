@@ -155,7 +155,7 @@ nav {
       border: solid #523634;
   } 
   
-  .searchBar input{
+   .searchBar input{
       background: transparent;
       flex: 2;
       border: 0;
@@ -163,16 +163,16 @@ nav {
       padding: 10px;
       font-size: 13px;
       color: #523634;
-  }
+  } 
   
-  ::placeholder{
+   ::placeholder{
       color: #523634;
       width: 205%;
-  }
-  
-  .searchBar button img{
-      width: 15px;
   } 
+  
+   .searchicone{
+      width: 15px;
+  }  
   
   .searchBar button{
       border: 0;
@@ -349,14 +349,6 @@ select {
   width: 150px; 
   height: 20px;
 }
-
-
-
-
-
-
-
-
 
 
 /* Style pour le bouton de soumission */

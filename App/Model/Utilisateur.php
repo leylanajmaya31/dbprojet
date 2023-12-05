@@ -1,8 +1,8 @@
 <?php
 namespace App\Model;
-use App\Utils\BddConnect;
+use App\Utils\Connexion;
 use App\Model\Role;
-class Utilisateur extends BddConnect{
+class Utilisateur{
     //attributs
     private ?int $id_utilisateur;
     private ?string $nom_utilisateur;
@@ -76,7 +76,7 @@ class Utilisateur extends BddConnect{
             $mdp = $this->mdp_utilisateur;
             $image = $this->image_utilisateur;
             $statut = $this->statut_utilisateur;
-            $req = $this->connexion()->prepare(
+            $req = Connexion::getInstance()->getConn()->prepare(
                 "INSERT INTO utilisateur(nom_utilisateur, prenom_utilisateur, 
                 email_utilisateur, mdp_utilisateur, image_utilisateur, statut_utilisateur) VALUES(?,?,?,?,?,?)");
             $req->bindParam(1, $nom, \PDO::PARAM_STR);
@@ -95,7 +95,7 @@ class Utilisateur extends BddConnect{
         try {
             //!récupérer les données de l'objet
             $mail = $this->email_utilisateur;
-            $req = $this->connexion()->prepare(
+            $req = Connexion::getInstance()->getConn()->prepare(
                 "SELECT id_utilisateur, nom_utilisateur, prenom_utilisateur, 
                 email_utilisateur, mdp_utilisateur, statut_utilisateur, image_utilisateur 
                 FROM utilisateur WHERE email_utilisateur = ?");
@@ -110,7 +110,7 @@ class Utilisateur extends BddConnect{
     public function findAll(){
         try {
             $id = $this->getId();
-            $req = $this->connexion()->prepare(
+            $req = Connexion::getInstance()->getConn()->prepare(
                 "SELECT id_utilisateur, nom_utilisateur, prenom_utilisateur, 
                 email_utilisateur, image_utilisateur FROM utilisateur WHERE id_utilisateur != ?");
             $req->bindParam(1, $id, \PDO::PARAM_INT);
@@ -123,7 +123,7 @@ class Utilisateur extends BddConnect{
     public function update(){
         try {
             $email = $this->email_utilisateur;
-            $req = $this->connexion()->prepare('UPDATE utilisateur SET 
+            $req = Connexion::getInstance()->getConn()->prepare('UPDATE utilisateur SET 
             statut_utilisateur = true WHERE email_utilisateur = ?');
             $req->bindParam(1, $email, \PDO::PARAM_STR);
             $req->execute();

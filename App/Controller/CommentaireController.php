@@ -26,7 +26,7 @@ class CommentaireController extends Commentaire{
                             $this->setCommentaire(Utilitaire::cleanInput($_POST['commentaire_commenter']));
                             $this->setStatut(false);
                             $this->getAuteur()->setId(Utilitaire::cleanInput($_SESSION['id']));
-                            $this->getRecette()->setId(Utilitaire::cleanInput($_GET['id_recette']));
+                            $this->getRecette()->setIdRecette(Utilitaire::cleanInput($_GET['id_recette']));
                             //ajout du commentaire
                             $this->add();
                             $error = "Le commentaire à été ajouté";
@@ -51,9 +51,17 @@ class CommentaireController extends Commentaire{
         else{
             header('location: ./recettefilter');
         }
-        Template::render('navbar.php', 'footer.php', 'vueAddCommentary.php','Commenter',   
-        ['script.js', 'main.js'], ['style.css', 'main.css'],$error);
+        Template::render(
+            'navbar.php',
+            'footer.php',
+            'vueAddCommentary.php',
+            'Recette',
+            $error,
+            ['script.js'],
+            ['styleCss.css'],
+        );
     }
+
     public function allCommentaire(){
         $error = "";
         $commentaires = [];
@@ -71,7 +79,14 @@ class CommentaireController extends Commentaire{
         }else{
             header('location: ./recettefilter');
         }
-        Template::render('navbar.php', 'footer.php', 'vueAllCommentary.php','Commenter',   
-        ['script.js', 'main.js'], ['style.css', 'main.css'],$error, $commentaires);
+        Template::render(
+            'navbar.php',
+            'footer.php',
+            'vueAllCommentary.php',
+            'Recette',
+            $error,
+            ['script.js'],
+            ['styleCss.css'],
+        );
     }
 }

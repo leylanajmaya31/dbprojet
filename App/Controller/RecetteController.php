@@ -7,10 +7,8 @@ use App\Utils\Utilitaire;
 use App\Model\Recette;
 use App\Model\Ingredient;
 
-class RecetteController extends Recette
-{
-    public function addRecette()
-    {
+class RecetteController extends Recette {
+    public function addRecette() {
         $error = "";
         $user = new Utilisateur();
 
@@ -18,6 +16,7 @@ class RecetteController extends Recette
         $userId = Utilitaire::cleanInput($_SESSION['id']);
         $user->setId($userId);
         $users = $user->findAll();
+
         if (isset($_POST['submit'])) {
             if (
                 !empty($_POST['nom_recette']) &&
@@ -41,52 +40,59 @@ class RecetteController extends Recette
                 $imageName = Utilitaire::cleanInput($_FILES['image_recette']['name']);
                 $uploadDir = './Public/asset/images/'; // Chemin vers le répertoire de destination
                 $uploadFile = $uploadDir . basename($imageName);
+
                 if (move_uploaded_file($_FILES['image_recette']['tmp_name'], $uploadFile)) {
                     // Le fichier a été téléchargé avec succès
                     $this->setImage($imageName);
-                    // Associer l'ID de l'utilisateur à la recette
-                    // $this->setAuteur($userId);
+
                     // Vérifier si la recette existe déjà
                     $recette = $this->findOneBy();
                     if ($recette) {
                         $error = "La recette existe déjà";
-                    } else {
-                        $this->add();
-                        $error = "La recette a été ajoutée en BDD";
-                    }
-                    //nouveau test a partie de la 
-                    // Récupérer l'ID de la dernière recette
-                    $lastInsertedId = $this->getLastInsertedId();
+} else {
+    // Récupération de l'ID de la recette nouvellement ajoutée
+    $this->add();
+    $recette = $this->getIdRecette();
+// Ajout des ingrédients
+// Récupération des ingrédients depuis $_POST
+$nomIngredient = $_POST['nom_ingredient'];
+$quantiteIngredient = $_POST['quantite_ingredient'];
+$uniteIngredient = $_POST['unite_ingredient'];
+// Vous pouvez maintenant utiliser ces tableaux dans votre logique pour traiter les ingrédients
 
-                    // Utilisez $lastInsertedId comme nécessaire
-
-                    $error = "La recette a été ajoutée en BDD avec l'ID : " . $lastInsertedId;
-
-                    // Maintenant, ajoutez les ingrédients (ajoutez cette partie)
-                    $ingredient = new Ingredient();
-                    $ingredient->setIdIngredient($lastInsertedId);
-
-                    if (!empty($_POST['nom_ingredient'])) {
-                        $ingredient->setNom(Utilitaire::cleanInput($_POST['nom_ingredient']));
-                        $ingredient->add();
-                        $error = "Le recette et les ingrédient ont été ajoutés avec succès. ";
-                    }
-                } else {
-                    $error = "Erreur lors du téléchargement de l'image.";
-                }
-            } else {
-                $error = "Veuillez remplir tous les champs du formulaire";
-            }
+ // Ajout des ingrédients
+ foreach ($nomIngredient as $key => $nomIngredient) {
+    $quantiteIngredient = $quantiteIngredient[$key];
+    $uniteIngredient = $uniteIngredient[$key];
+        // Créer une instance de votre modèle Ingredient
+        $ingredient = new Ingredient();
+    
+        // Vérifier si toutes les valeurs nécessaires sont présentes et non vides
+        if (!empty($nomIngredient) && !empty($quantiteIngredient) && !empty($uniteIngredient)) {
+            $ingredient->setNom($nomIngredient);
+            $ingredient->setQuantite($quantiteIngredient);
+            $ingredient->setUnite($uniteIngredient);
+             // Ajouter l'ingrédient à la recette
+            $ingredient->addIngredientToRecette($recette);
         }
-
+    }
+$error = "La recette et les ingrédients ont bien été ajoutés en base de données.";
+}
+            } else {
+                $error = "Erreur lors du téléchargement de l'image.";
+            }
+        } else {
+            $error = "Veuillez remplir tous les champs du formulaire";
+        }
+    }
         Template::render(
             'navbar.php',
             'footer.php',
             'vueAddRecette.php',
             'Recette',
-            ['script.js', 'main.js'],
-            ['style.css', 'main.css'],
             $error,
+            ['script.js'],
+            ['styleCss.css'],
             $users
         );
     }
@@ -102,10 +108,10 @@ class RecetteController extends Recette
             'navbar.php',
             'footer.php',
             'vueAllRecette.php',
-            'Toutes les Recettes',
-            ['script.js', 'main.js'],
-            ['style.css', 'main.css'],
+            'Recette',
             $error,
+            ['script.js'],
+            ['styleCss.css'],
             $recettes
         );
     }
@@ -131,24 +137,46 @@ class RecetteController extends Recette
 //     }
 // }
 
-public function getOneRecette() {
-    $recette = $this->find();
+// public function getOneRecette() {
+//     $recette = $this->find();
 
-    if (!$recette) {
-        $error = "Il n'y a pas de recettes à afficher";
-    }
+//     if (!$recette) {
+//         $error = "Il n'y a pas de recettes à afficher";
+//     }
 
-    Template::render(
-        'navbar.php',
-        'footer.php',
-        'vueOneRecette.php', // Assurez-vous que le chemin vers la vue est correct
-        'Détails de la Recette',
-        ['script.js', 'main.js'],
-        ['style.css', 'main.css'],
-        null, // Pas d'erreur dans ce cas
-        $recette
-    );
-}
+//     Template::render(
+//         'navbar.php',
+//         'footer.php',
+//         'vueOneRecette.php',
+//         'Détails de la Recette',
+//         ['script.js', 'main.js'],
+//         ['style.css', 'main.css'],
+//         $error,
+//         $recette
+//     );
+// }
+
+// public function getOneRecette($id_recette) {
+//     $recette = $this->find($id_recette);
+
+//     if (!$recette) {
+//         $error = "La recette n'existe pas";
+//     }
+
+//     Template::render(
+//         'navbar.php',
+//         'footer.php',
+//         'vueOneRecette.php',
+//         'Détails de la Recette',
+//         ['script.js', 'main.js'],
+//         ['style.css', 'main.css'],
+//         $error,
+//         $recette
+//     );
+// }
+
+
+
 }
 
 

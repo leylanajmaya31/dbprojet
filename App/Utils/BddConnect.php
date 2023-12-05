@@ -1,6 +1,7 @@
 <?php
     namespace App\Utils;
     class BddConnect{
+        private $conn = null;
         //!fonction connexion BDD
         public function connexion(){
             //!import du fichier de configuration

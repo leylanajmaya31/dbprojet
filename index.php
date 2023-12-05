@@ -44,9 +44,9 @@
             case '/dbprojet/recetteall':
                 $recetteController->getAllRecette();
                 break;
-                case '/dbprojet/recetteone':
-                    $recetteController->getOneRecette();
-                    break;
+                // case '/dbprojet/recetteone':
+                //     $recetteController->getOneRecette($id_recette);
+                //     break;
             case '/dbprojet/emailtest':
                 $homeController->testMail();
                 break;
@@ -86,7 +86,7 @@
                 $commentaireController->allCommentaire();
                 break;
             case '/dbprojet/commentaireadd':
-            case '/dbprojet/recetteupdate':
+            // case '/dbprojet/recetteupdate':
                 $homeController->get401();
                 break;
             default:
