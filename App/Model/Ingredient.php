@@ -32,25 +32,29 @@ public function getUnite(){
 public function setUnite(?string $unite):void{
     $this->unite_ingredient = $unite;
 }
+
 public function addIngredient(){
     try {
         $nom = $this->getNom();
         $quantite = $this->getQuantite(); 
         $unite = $this->getUnite();
         $conn = Connexion::getInstance()->getConn();
-        $req = $conn->prepare('INSERT INTO ingredients(nom_ingredient, quantite_ingredient, unite_ingredient)
+        $req = $conn->prepare ('INSERT INTO ingredients(nom_ingredient, quantite_ingredient, unite_ingredient)
         VALUES (?,?,?)');
         $req->bindParam(1, $nom, \PDO::PARAM_STR);
         $req->bindParam(2, $quantite, \PDO::PARAM_INT);
         $req->bindParam(3, $unite, \PDO::PARAM_STR);
-        $this->id_ingredient = $conn->lastInsertId();
         $req->execute();
+        $this->id_ingredients = $conn->lastInsertId();
     } catch (\Exception $e) {
         die('Error :'.$e->getMessage());
     } 
 }
 
+
+
 public function addIngredientToRecette($idRecette) {
+    //dd($this);
     try {
         $idIngredient = $this->getIdIngredient();
 
@@ -60,15 +64,12 @@ public function addIngredientToRecette($idRecette) {
             $req->bindParam(1, $idRecette, \PDO::PARAM_INT);
             $req->bindParam(2, $idIngredient, \PDO::PARAM_INT);
             $req->execute();
+            return $req->fetchAll(\PDO::FETCH_ASSOC);
         }
     } catch (\Exception $e) {
         die('Error: ' . $e->getMessage());
     }
 }
-
-
-
-
 
 
 public function findOneBy(){

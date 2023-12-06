@@ -2,8 +2,8 @@
     //!import du fichier de configuration
     include './env.php';
     //!import de l'autoloader des classes
-    require_once './autoload.php';
     require_once './vendor/autoload.php';
+    // require_once './vendor/autoload.php';
     use App\Controller\UtilisateurController;
     use App\Controller\RoleController;
     use App\Controller\HomeController;

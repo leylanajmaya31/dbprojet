@@ -7,10 +7,10 @@ class Template{
             include './App/Vue/'.$footer;
             include './App/Vue/'.$content;
             foreach($js as $value){
-                echo '<script src="Public/asset/script/'.$value.'"></script>';
+                echo '<script src="./Public/asset/script/'.$value.'"></script>';
             }
             foreach($css as $value) {
-                echo '<link rel="stylesheet" href="Public/asset/style/'.$value.'">';
+                echo '<link rel="stylesheet" href="./Public/asset/style/'.$value.'">';
             }
         }
         else{
@@ -23,3 +23,4 @@ class Template{
     }
 }
 ?>
+

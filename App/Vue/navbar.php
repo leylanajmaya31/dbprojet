@@ -51,7 +51,7 @@
 <?php else:?>
   <header>
     <div class="logo">
-      <img src="/images/New_Logo_Share&Cook.png" alt="">
+      <img src="./Public/asset/images/New_Logo_Share&Cook.png" alt="">
       <h2 id="headTitle"> La pâtisserie ça se partage</h2>
     </div>
   <nav>

@@ -129,7 +129,6 @@ class Recette {
             $req->execute();
             // Récupérez l'ID de la dernière insertion
             $this->id_recette = $conn->lastInsertId();
-            return $this->id_recette; // Retourne l'ID de la recette nouvellement ajoutée
         } catch (\Exception $e) {
             die('Error :'.$e->getMessage());
         } 

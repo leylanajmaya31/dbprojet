@@ -15,11 +15,8 @@ class IngredientController extends Ingredient{
         $user->setId($userId);
         $users = $user->findAll();
         if (isset($_POST['submit'])) {
-            if (
-                !empty($_POST['nom_ingredient']) &&
-                !empty($_POST['quantite_ingredient']) &&
-                !empty($_POST['unite_ingredient'])
-            ) {
+            if ( !empty($_POST['ingredients'])) {
+                
                 $this->setNom(Utilitaire::cleanInput($_POST['nom_ingredient']));
                 $this->setQuantite(Utilitaire::cleanInput($_POST['quantite_ingredient']));
                 $this->setUnite(Utilitaire::cleanInput($_POST['unite_ingredient']));

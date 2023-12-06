@@ -17,8 +17,8 @@ class RecetteController extends Recette {
         $user->setId($userId);
         $users = $user->findAll();
 
-        if (isset($_POST['submit'])) {
-            if (
+        if(isset($_POST['submit'])) {
+            if(
                 !empty($_POST['nom_recette']) &&
                 !empty($_POST['date_recette']) &&
                 !empty($_POST['niveau_recette']) &&
@@ -26,7 +26,8 @@ class RecetteController extends Recette {
                 !empty($_POST['portion_recette']) &&
                 !empty($_POST['unite_recette']) &&
                 !empty($_POST['temps_recette']) &&
-                !empty($_FILES['image_recette']['name'])
+                !empty($_FILES['image_recette']['name']) && 
+                !empty($_POST['ingredients'])
             ) {
                 $this->setNom(Utilitaire::cleanInput($_POST['nom_recette']));
                 $this->setDate(Utilitaire::cleanInput($_POST['date_recette']));
@@ -39,52 +40,42 @@ class RecetteController extends Recette {
                 // Nettoyer le nom du fichier image
                 $imageName = Utilitaire::cleanInput($_FILES['image_recette']['name']);
                 $uploadDir = './Public/asset/images/'; // Chemin vers le répertoire de destination
-                $uploadFile = $uploadDir . basename($imageName);
+                $uploadFile = $uploadDir.basename($imageName);
 
-                if (move_uploaded_file($_FILES['image_recette']['tmp_name'], $uploadFile)) {
+                if(move_uploaded_file($_FILES['image_recette']['tmp_name'], $uploadFile)) {
                     // Le fichier a été téléchargé avec succès
                     $this->setImage($imageName);
 
                     // Vérifier si la recette existe déjà
                     $recette = $this->findOneBy();
-                    if ($recette) {
+                    if($recette) {
                         $error = "La recette existe déjà";
-} else {
-    // Récupération de l'ID de la recette nouvellement ajoutée
-    $this->add();
-    $recette = $this->getIdRecette();
-// Ajout des ingrédients
-// Récupération des ingrédients depuis $_POST
-$nomIngredient = $_POST['nom_ingredient'];
-$quantiteIngredient = $_POST['quantite_ingredient'];
-$uniteIngredient = $_POST['unite_ingredient'];
-// Vous pouvez maintenant utiliser ces tableaux dans votre logique pour traiter les ingrédients
+                    } else {
+                        // Récupération de l'ID de la recette nouvellement ajoutée
+                        $this->add();
+                        $recette = $this->getIdRecette();
+                        // Ajout des ingrédients
+                        
+                        // Récupération des ingrédients depuis $_POST
+                        foreach($_POST['ingredients'] as $ingredientJson) {
+                            $ingredientArray = json_decode($ingredientJson, true);
+                            $ingredient = new Ingredient();
+                            $ingredient->setNom($ingredientArray['name']);
+                            $ingredient->setQuantite($ingredientArray['quantity']);
+                            $ingredient->setUnite($ingredientArray['unit']);
+                            $ingredient->addIngredient();
+                            $ingredient->addIngredientToRecette($this->getIdRecette());
+                        }
 
- // Ajout des ingrédients
- foreach ($nomIngredient as $key => $nomIngredient) {
-    $quantiteIngredient = $quantiteIngredient[$key];
-    $uniteIngredient = $uniteIngredient[$key];
-        // Créer une instance de votre modèle Ingredient
-        $ingredient = new Ingredient();
-    
-        // Vérifier si toutes les valeurs nécessaires sont présentes et non vides
-        if (!empty($nomIngredient) && !empty($quantiteIngredient) && !empty($uniteIngredient)) {
-            $ingredient->setNom($nomIngredient);
-            $ingredient->setQuantite($quantiteIngredient);
-            $ingredient->setUnite($uniteIngredient);
-             // Ajouter l'ingrédient à la recette
-            $ingredient->addIngredientToRecette($recette);
-        }
-    }
-$error = "La recette et les ingrédients ont bien été ajoutés en base de données.";
-}
+                        $error = "La recette et les ingrédients ont bien été ajoutés en base de données.";
+                    }
+                } else {
+                    $error = "Erreur lors du téléchargement de l'image.";
+                }
             } else {
-                $error = "Erreur lors du téléchargement de l'image.";
+                $error = "Veuillez remplir tous les champs du formulaire";
             }
-        } else {
-            $error = "Veuillez remplir tous les champs du formulaire";
         }
-    }
         Template::render(
             'navbar.php',
             'footer.php',
@@ -97,11 +88,10 @@ $error = "La recette et les ingrédients ont bien été ajoutés en base de donn
         );
     }
 
-    public function getAllRecette()
-    {
+    public function getAllRecette() {
         $error = "";
         $recettes = $this->findAll();
-        if (empty($recettes)) {
+        if(empty($recettes)) {
             $error = "Il n'y a pas de recettes à afficher";
         }
         Template::render(
@@ -115,7 +105,7 @@ $error = "La recette et les ingrédients ont bien été ajoutés en base de donn
             $recettes
         );
     }
-
+}
 
 //     public function getRecette()
 //     {
@@ -174,10 +164,6 @@ $error = "La recette et les ingrédients ont bien été ajoutés en base de donn
 //         $recette
 //     );
 // }
-
-
-
-}
 
 
 

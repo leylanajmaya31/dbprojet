@@ -26,24 +26,21 @@
         </select>
 
         <label for="nom_ingredient">Ingrédient</label>
-    <input type="text" id="nom_ingredient" name="nom_ingredient[]">
+    <input type="text" id="nom_ingredient" >
 
     <label for="quantite_ingredient">Quantité</label>
-    <input type="number" id="quantite_ingredient" name="quantite_ingredient[]">
+    <input type="number" id="quantite_ingredient" >
 
     <label for="unite_ingredient">Unité</label>
-    <input type="text" id="unite_ingredient" name="unite_ingredient[]">
-    <!-- <select id="unite_ingredient" name="unite_ingredient[]">
+    <!-- <input type="text" id="unite_ingredient" > -->
+    <select id="unite_ingredient" >
         <option value="kilogramme">kilogramme</option>
         <option value="gramme">gramme</option>
         <option value="centilitre">centilitre</option>
         <option value="millilitre">millilitre</option>
-    </select> -->
+    </select>
     <button type="button" onclick="ajouterIngredient(event)">Ajouter un ingrédient</button>
-    <!-- <ul id="ingredientList"></ul> -->
     <ul id="ingredientList" class="ingredient"></ul>
-
-
 
     <label for="description_recette"> Description de la recette *</label>
     <textarea id="description_recette" name="description_recette" placeholder="Ex: Faire fondre le chocolat" rows="12" cols="35"></textarea>
